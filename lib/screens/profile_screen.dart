@@ -32,17 +32,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A),
       appBar: AppBar(
         title: const Text(
           'Profile',
           style: TextStyle(
-            color: Colors.white,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: const Color(0xFF1A1A1A),
         elevation: 0,
         actions: [
           if (!_isEditing)

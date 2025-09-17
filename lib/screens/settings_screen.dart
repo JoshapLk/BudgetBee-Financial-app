@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -10,27 +12,19 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
   bool _biometricEnabled = false;
-  bool _darkModeEnabled = true;
   String _selectedCurrency = 'USD';
   String _selectedLanguage = 'English';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A),
       appBar: AppBar(
         title: const Text(
           'Settings',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color(0xFF1A1A1A),
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -58,17 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   subtitle: _selectedCurrency,
                   onTap: _showCurrencyDialog,
                 ),
-                _buildSwitchTile(
-                  icon: Icons.dark_mode,
-                  title: 'Dark Mode',
-                  subtitle: 'Use dark theme',
-                  value: _darkModeEnabled,
-                  onChanged: (value) {
-                    setState(() {
-                      _darkModeEnabled = value;
-                    });
-                  },
-                ),
+                _buildThemeSelectionTile(),
               ],
             ),
             const SizedBox(height: 24),
@@ -321,6 +305,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Widget _buildThemeSelectionTile() {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        String themeText;
+        IconData themeIcon;
+
+        switch (themeProvider.themeMode) {
+          case AppThemeMode.light:
+            themeText = 'Light Mode';
+            themeIcon = Icons.light_mode;
+            break;
+          case AppThemeMode.dark:
+            themeText = 'Dark Mode';
+            themeIcon = Icons.dark_mode;
+            break;
+          case AppThemeMode.system:
+            themeText = 'System Mode';
+            themeIcon = Icons.brightness_auto;
+            break;
+        }
+
+        return _buildSettingTile(
+          icon: themeIcon,
+          title: 'Theme',
+          subtitle: themeText,
+          onTap: () => _showThemeDialog(themeProvider),
+        );
+      },
+    );
+  }
+
   Widget _buildSection({
     required String title,
     required List<Widget> children,
@@ -332,20 +347,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: const EdgeInsets.only(left: 4, bottom: 12),
           child: Text(
             title,
-            style: const TextStyle(
-              color: Color(0xFFFFD700),
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFF2A2A2A),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(children: children),
-        ),
+        Card(child: Column(children: children)),
       ],
     );
   }
@@ -361,30 +370,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: (textColor ?? Colors.white).withOpacity(0.1),
+          color: (textColor ?? Theme.of(context).primaryColor).withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
           icon,
-          color: textColor ?? const Color(0xFFFFD700),
+          color: textColor ?? Theme.of(context).primaryColor,
           size: 20,
         ),
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: textColor ?? Colors.white,
+          color: textColor ?? Theme.of(context).textTheme.bodyLarge?.color,
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
       ),
       subtitle: Text(
         subtitle,
-        style: TextStyle(color: Colors.white70, fontSize: 14),
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodySmall?.color,
+          fontSize: 14,
+        ),
       ),
-      trailing: const Icon(
+      trailing: Icon(
         Icons.arrow_forward_ios,
-        color: Colors.white54,
+        color: Theme.of(context).textTheme.bodySmall?.color,
         size: 16,
       ),
       onTap: onTap,
@@ -402,31 +414,100 @@ class _SettingsScreenState extends State<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color(0xFFFFD700).withOpacity(0.1),
+          color: Theme.of(context).primaryColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Icon(Icons.settings, color: Color(0xFFFFD700), size: 20),
+        child: Icon(icon, color: Theme.of(context).primaryColor, size: 20),
       ),
       title: Text(
         title,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodyLarge?.color,
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
       ),
       subtitle: Text(
         subtitle,
-        style: const TextStyle(color: Colors.white70, fontSize: 14),
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodySmall?.color,
+          fontSize: 14,
+        ),
       ),
-      trailing: Switch(
-        value: value,
-        onChanged: onChanged,
-        activeColor: const Color(0xFFFFD700),
-        activeTrackColor: const Color(0xFFFFD700).withOpacity(0.3),
-        inactiveThumbColor: Colors.white54,
-        inactiveTrackColor: Colors.white24,
+      trailing: Switch(value: value, onChanged: onChanged),
+    );
+  }
+
+  void _showThemeDialog(ThemeProvider themeProvider) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Select Theme'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildThemeOption(
+                  context,
+                  themeProvider,
+                  AppThemeMode.light,
+                  'Light Mode',
+                  Icons.light_mode,
+                  'Always use light theme',
+                ),
+                _buildThemeOption(
+                  context,
+                  themeProvider,
+                  AppThemeMode.dark,
+                  'Dark Mode',
+                  Icons.dark_mode,
+                  'Always use dark theme',
+                ),
+                _buildThemeOption(
+                  context,
+                  themeProvider,
+                  AppThemeMode.system,
+                  'System Mode',
+                  Icons.brightness_auto,
+                  'Follow system setting',
+                ),
+              ],
+            ),
+          ),
+    );
+  }
+
+  Widget _buildThemeOption(
+    BuildContext context,
+    ThemeProvider themeProvider,
+    AppThemeMode mode,
+    String title,
+    IconData icon,
+    String subtitle,
+  ) {
+    final isSelected = themeProvider.themeMode == mode;
+
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: isSelected ? Theme.of(context).primaryColor : null,
       ),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: isSelected ? Theme.of(context).primaryColor : null,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
+      ),
+      subtitle: Text(subtitle),
+      trailing:
+          isSelected
+              ? Icon(Icons.check, color: Theme.of(context).primaryColor)
+              : null,
+      onTap: () {
+        themeProvider.setThemeMode(mode);
+        Navigator.pop(context);
+      },
     );
   }
 
@@ -435,20 +516,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: const Color(0xFF2A2A2A),
-            title: const Text(
-              'Select Language',
-              style: TextStyle(color: Colors.white),
-            ),
+            title: const Text('Select Language'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children:
                   ['English', 'Spanish', 'French', 'German'].map((language) {
                     return ListTile(
-                      title: Text(
-                        language,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                      title: Text(language),
                       leading: Radio<String>(
                         value: language,
                         groupValue: _selectedLanguage,
@@ -458,7 +532,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           });
                           Navigator.pop(context);
                         },
-                        activeColor: const Color(0xFFFFD700),
                       ),
                     );
                   }).toList(),
@@ -472,20 +545,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: const Color(0xFF2A2A2A),
-            title: const Text(
-              'Select Currency',
-              style: TextStyle(color: Colors.white),
-            ),
+            title: const Text('Select Currency'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children:
                   ['USD', 'EUR', 'GBP', 'JPY', 'CAD'].map((currency) {
                     return ListTile(
-                      title: Text(
-                        currency,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                      title: Text(currency),
                       leading: Radio<String>(
                         value: currency,
                         groupValue: _selectedCurrency,
@@ -495,7 +561,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           });
                           Navigator.pop(context);
                         },
-                        activeColor: const Color(0xFFFFD700),
                       ),
                     );
                   }).toList(),
@@ -509,22 +574,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: const Color(0xFF2A2A2A),
-            title: const Text(
-              'Coming Soon',
-              style: TextStyle(color: Colors.white),
-            ),
-            content: Text(
-              '$feature feature is coming soon!',
-              style: const TextStyle(color: Colors.white70),
-            ),
+            title: const Text('Coming Soon'),
+            content: Text('$feature feature is coming soon!'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(color: Color(0xFFFFD700)),
-                ),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -560,22 +615,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: const Color(0xFF2A2A2A),
-            title: const Text(
-              'Sign Out',
-              style: TextStyle(color: Colors.white),
-            ),
-            content: const Text(
-              'Are you sure you want to sign out?',
-              style: TextStyle(color: Colors.white70),
-            ),
+            title: const Text('Sign Out'),
+            content: const Text('Are you sure you want to sign out?'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(color: Colors.white70),
-                ),
+                child: const Text('Cancel'),
               ),
               TextButton(
                 onPressed: () {
@@ -598,22 +643,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: const Color(0xFF2A2A2A),
             title: const Text(
               'Delete Account',
               style: TextStyle(color: Colors.red),
             ),
             content: const Text(
               'This action cannot be undone. All your data will be permanently deleted.',
-              style: TextStyle(color: Colors.white70),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(color: Colors.white70),
-                ),
+                child: const Text('Cancel'),
               ),
               TextButton(
                 onPressed: () {

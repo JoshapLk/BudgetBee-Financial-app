@@ -67,24 +67,17 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
     final remaining = totalBudget - totalSpent;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A),
       appBar: AppBar(
         title: const Text(
           'Budgeting',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color(0xFF1A1A1A),
-        elevation: 0,
         actions: [
           IconButton(
             onPressed: () {
               _showCreateBudgetDialog();
             },
-            icon: const Icon(Icons.add, color: Colors.white),
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
@@ -105,10 +98,10 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Budget Categories',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -117,9 +110,12 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
                   onPressed: () {
                     // TODO: Navigate to detailed budget view
                   },
-                  child: const Text(
+                  child: Text(
                     'Manage',
-                    style: TextStyle(color: Color(0xFFFFD700), fontSize: 16),
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ],
@@ -252,16 +248,16 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
       height: 200,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2A),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Budget vs Spending',
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -298,8 +294,9 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
                             value.toInt() < categories.length) {
                           return Text(
                             categories[value.toInt()],
-                            style: const TextStyle(
-                              color: Colors.white70,
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodySmall?.color,
                               fontSize: 10,
                             ),
                           );
@@ -314,8 +311,8 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
                       getTitlesWidget: (value, meta) {
                         return Text(
                           '\$${value.toInt()}',
-                          style: const TextStyle(
-                            color: Colors.white70,
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodySmall?.color,
                             fontSize: 10,
                           ),
                         );
@@ -368,7 +365,7 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2A),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -398,16 +395,16 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
                   children: [
                     Text(
                       category.name,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
                       '\$${category.spent.toStringAsFixed(0)} of \$${category.budget.toStringAsFixed(0)}',
-                      style: const TextStyle(
-                        color: Colors.white70,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodySmall?.color,
                         fontSize: 14,
                       ),
                     ),
@@ -418,7 +415,10 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
               Text(
                 '${percentage.toStringAsFixed(0)}%',
                 style: TextStyle(
-                  color: isOverBudget ? Colors.red : Colors.white,
+                  color:
+                      isOverBudget
+                          ? Colors.red
+                          : Theme.of(context).textTheme.bodyLarge?.color,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -432,7 +432,11 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: (percentage / 100).clamp(0, 1),
-              backgroundColor: Colors.white.withOpacity(0.1),
+              backgroundColor:
+                  Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.color?.withOpacity(0.1) ??
+                  Colors.grey.withOpacity(0.1),
               valueColor: AlwaysStoppedAnimation<Color>(
                 isOverBudget ? Colors.red : category.color,
               ),
@@ -449,22 +453,12 @@ class _BudgetingScreenState extends State<BudgetingScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: const Color(0xFF2A2A2A),
-            title: const Text(
-              'Create New Budget',
-              style: TextStyle(color: Colors.white),
-            ),
-            content: const Text(
-              'Budget creation feature coming soon!',
-              style: TextStyle(color: Colors.white70),
-            ),
+            title: const Text('Create New Budget'),
+            content: const Text('Budget creation feature coming soon!'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(color: Color(0xFFFFD700)),
-                ),
+                child: const Text('OK'),
               ),
             ],
           ),

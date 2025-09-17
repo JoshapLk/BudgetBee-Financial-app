@@ -83,24 +83,17 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A),
       appBar: AppBar(
         title: const Text(
           'Transactions',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color(0xFF1A1A1A),
-        elevation: 0,
         actions: [
           IconButton(
             onPressed: () {
               // TODO: Implement filter functionality
             },
-            icon: const Icon(Icons.filter_list, color: Colors.white),
+            icon: const Icon(Icons.filter_list),
           ),
         ],
       ),
@@ -126,8 +119,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         onPressed: () {
           Navigator.pushNamed(context, '/add-transaction');
         },
-        backgroundColor: const Color(0xFFFFD700),
-        child: const Icon(Icons.add, color: Colors.black),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -176,7 +168,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2A),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -188,15 +180,18 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               const SizedBox(width: 8),
               Text(
                 title,
-                style: const TextStyle(color: Colors.white70, fontSize: 12),
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             '\$${amount.toStringAsFixed(2)}',
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyLarge?.color,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -211,7 +206,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2A),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -244,8 +239,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               children: [
                 Text(
                   transaction.title,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -253,13 +248,21 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 const SizedBox(height: 4),
                 Text(
                   transaction.categoryDisplayName,
-                  style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodySmall?.color,
+                    fontSize: 14,
+                  ),
                 ),
                 if (transaction.description != null) ...[
                   const SizedBox(height: 2),
                   Text(
                     transaction.description!,
-                    style: const TextStyle(color: Colors.white60, fontSize: 12),
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.color?.withOpacity(0.7),
+                      fontSize: 12,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -286,7 +289,12 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               const SizedBox(height: 4),
               Text(
                 transaction.formattedDate,
-                style: const TextStyle(color: Colors.white60, fontSize: 12),
+                style: TextStyle(
+                  color: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.color?.withOpacity(0.7),
+                  fontSize: 12,
+                ),
               ),
             ],
           ),

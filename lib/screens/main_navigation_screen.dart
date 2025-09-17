@@ -5,7 +5,6 @@ import 'budgeting_screen.dart';
 import 'reports_screen.dart';
 import 'goals_screen.dart';
 import 'profile_screen.dart';
-import 'settings_screen.dart';
 import 'add_transaction_screen.dart';
 import '../models/transaction.dart';
 
@@ -33,9 +32,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFF1A1A1A),
-          border: Border(top: BorderSide(color: Colors.white12, width: 1)),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          border: Border(
+            top: BorderSide(color: Theme.of(context).dividerColor, width: 1),
+          ),
         ),
         child: SafeArea(
           child: Padding(
@@ -97,14 +98,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           children: [
             Icon(
               isActive ? activeIcon : icon,
-              color: isActive ? const Color(0xFFFFD700) : Colors.white54,
+              color:
+                  isActive
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).textTheme.bodySmall?.color,
               size: 24,
             ),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                color: isActive ? const Color(0xFFFFD700) : Colors.white54,
+                color:
+                    isActive
+                        ? Theme.of(context).primaryColor
+                        : Theme.of(context).textTheme.bodySmall?.color,
                 fontSize: 12,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
               ),
@@ -124,11 +131,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         width: 56,
         height: 56,
         decoration: BoxDecoration(
-          color: const Color(0xFFFFD700),
+          color: Theme.of(context).primaryColor,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFFFD700).withOpacity(0.3),
+              color: Theme.of(context).primaryColor.withOpacity(0.3),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -142,7 +149,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   void _showAddTransactionBottomSheet() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF2A2A2A),
+      backgroundColor: Theme.of(context).cardColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -159,7 +166,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     width: 40,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: Colors.white24,
+                      color: Theme.of(context).textTheme.bodySmall?.color,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -167,10 +174,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
                 const SizedBox(height: 24),
 
-                const Text(
+                Text(
                   'Quick Add Transaction',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -218,8 +225,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                       _navigateToAddTransaction();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFFD700),
-                      foregroundColor: Colors.black,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),

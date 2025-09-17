@@ -9,56 +9,55 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A), // Dark background
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: [
               const Spacer(flex: 2),
-              
+
               // Logo
               const BeeLogo(size: 100),
-              
+
               const SizedBox(height: 32),
-              
+
               // Welcome text
-              const Text(
+              Text(
                 'Welcome to',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                   fontSize: 18,
                   fontWeight: FontWeight.w300,
                 ),
               ),
-              
+
               const SizedBox(height: 8),
-              
+
               // App name
-              const Text(
+              Text(
                 'BudgetBee',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
                 ),
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               // Slogan
-              const Text(
+              Text(
                 'Where every rupee counts.',
                 style: TextStyle(
-                  color: Color(0xFFFFD700), // Yellow
+                  color: Theme.of(context).primaryColor,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Description
               const Text(
                 'Track your spending, save more, and achieve your financial goals.',
@@ -69,9 +68,9 @@ class WelcomeScreen extends StatelessWidget {
                   height: 1.5,
                 ),
               ),
-              
+
               const Spacer(flex: 2),
-              
+
               // Sign up with Email button
               SizedBox(
                 width: double.infinity,
@@ -80,7 +79,9 @@ class WelcomeScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpScreen(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -107,9 +108,9 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Continue with Google button
               SizedBox(
                 width: double.infinity,
@@ -166,25 +167,24 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 32),
-              
+
               // Login link
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
                     'Already have an account? ',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
                       );
                     },
                     child: const Text(
@@ -199,7 +199,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const Spacer(),
             ],
           ),

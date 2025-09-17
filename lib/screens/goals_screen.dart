@@ -12,24 +12,17 @@ class _GoalsScreenState extends State<GoalsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A),
       appBar: AppBar(
         title: const Text(
           'Financial Goals',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color(0xFF1A1A1A),
-        elevation: 0,
         actions: [
           IconButton(
             onPressed: () {
               _showAddGoalDialog();
             },
-            icon: const Icon(Icons.add, color: Colors.white),
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
@@ -232,8 +225,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyLarge?.color,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -287,8 +280,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -296,8 +289,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     const SizedBox(height: 4),
                     Text(
                       '\$${current.toStringAsFixed(0)} of \$${target.toStringAsFixed(0)}',
-                      style: const TextStyle(
-                        color: Colors.white70,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodySmall?.color,
                         fontSize: 14,
                       ),
                     ),
@@ -318,7 +311,10 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   ),
                   Text(
                     '${daysLeft}d left',
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodySmall?.color,
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ),
@@ -332,7 +328,11 @@ class _GoalsScreenState extends State<GoalsScreen> {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: progress,
-              backgroundColor: Colors.white.withOpacity(0.1),
+              backgroundColor:
+                  Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.color?.withOpacity(0.1) ??
+                  Colors.grey.withOpacity(0.1),
               valueColor: AlwaysStoppedAnimation<Color>(color),
               minHeight: 6,
             ),
@@ -345,11 +345,17 @@ class _GoalsScreenState extends State<GoalsScreen> {
             children: [
               Text(
                 'Remaining: \$${remaining.toStringAsFixed(0)}',
-                style: const TextStyle(color: Colors.white70, fontSize: 14),
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                  fontSize: 14,
+                ),
               ),
               Text(
                 'Due: ${deadline.day}/${deadline.month}/${deadline.year}',
-                style: const TextStyle(color: Colors.white70, fontSize: 14),
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                  fontSize: 14,
+                ),
               ),
             ],
           ),
@@ -394,8 +400,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -426,7 +432,10 @@ class _GoalsScreenState extends State<GoalsScreen> {
               ),
               Text(
                 '${completedDate.day}/${completedDate.month}/${completedDate.year}',
-                style: const TextStyle(color: Colors.white70, fontSize: 12),
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
@@ -439,16 +448,16 @@ class _GoalsScreenState extends State<GoalsScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2A),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Monthly Savings Progress',
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -486,8 +495,9 @@ class _GoalsScreenState extends State<GoalsScreen> {
                             value.toInt() < months.length) {
                           return Text(
                             months[value.toInt()],
-                            style: const TextStyle(
-                              color: Colors.white70,
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodySmall?.color,
                               fontSize: 10,
                             ),
                           );
@@ -502,8 +512,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       getTitlesWidget: (value, meta) {
                         return Text(
                           '\$${value.toInt()}',
-                          style: const TextStyle(
-                            color: Colors.white70,
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodySmall?.color,
                             fontSize: 10,
                           ),
                         );
@@ -518,7 +528,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     barRods: [
                       BarChartRodData(
                         toY: 1200,
-                        color: const Color(0xFFFFD700),
+                        color: Theme.of(context).primaryColor,
                         width: 20,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(4),
@@ -532,7 +542,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     barRods: [
                       BarChartRodData(
                         toY: 1500,
-                        color: const Color(0xFFFFD700),
+                        color: Theme.of(context).primaryColor,
                         width: 20,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(4),
@@ -546,7 +556,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     barRods: [
                       BarChartRodData(
                         toY: 1800,
-                        color: const Color(0xFFFFD700),
+                        color: Theme.of(context).primaryColor,
                         width: 20,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(4),
@@ -560,7 +570,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     barRods: [
                       BarChartRodData(
                         toY: 1600,
-                        color: const Color(0xFFFFD700),
+                        color: Theme.of(context).primaryColor,
                         width: 20,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(4),
@@ -574,7 +584,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     barRods: [
                       BarChartRodData(
                         toY: 2000,
-                        color: const Color(0xFFFFD700),
+                        color: Theme.of(context).primaryColor,
                         width: 20,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(4),
@@ -588,7 +598,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     barRods: [
                       BarChartRodData(
                         toY: 2200,
-                        color: const Color(0xFFFFD700),
+                        color: Theme.of(context).primaryColor,
                         width: 20,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(4),
@@ -618,20 +628,20 @@ class _GoalsScreenState extends State<GoalsScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2A),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.lightbulb, color: Color(0xFFFFD700), size: 24),
-              SizedBox(width: 12),
+              Icon(Icons.lightbulb, color: Theme.of(context).primaryColor, size: 24),
+              const SizedBox(width: 12),
               Text(
                 'Savings Tips',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -650,16 +660,16 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     width: 6,
                     height: 6,
                     margin: const EdgeInsets.only(top: 6, right: 12),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFFFD700),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
                       shape: BoxShape.circle,
                     ),
                   ),
                   Expanded(
                     child: Text(
                       tip,
-                      style: const TextStyle(
-                        color: Colors.white70,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodySmall?.color,
                         fontSize: 14,
                         height: 1.4,
                       ),
@@ -679,22 +689,12 @@ class _GoalsScreenState extends State<GoalsScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: const Color(0xFF2A2A2A),
-            title: const Text(
-              'Add New Goal',
-              style: TextStyle(color: Colors.white),
-            ),
-            content: const Text(
-              'Goal creation feature coming soon!',
-              style: TextStyle(color: Colors.white70),
-            ),
+            title: const Text('Add New Goal'),
+            content: const Text('Goal creation feature coming soon!'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(color: Color(0xFFFFD700)),
-                ),
+                child: const Text('OK'),
               ),
             ],
           ),
