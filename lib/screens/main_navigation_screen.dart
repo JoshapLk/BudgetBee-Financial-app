@@ -42,32 +42,40 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildNavItem(
-                  icon: Icons.dashboard_outlined,
-                  activeIcon: Icons.dashboard,
-                  label: 'Dashboard',
-                  index: 0,
+                Expanded(
+                  child: _buildNavItem(
+                    icon: Icons.dashboard_outlined,
+                    activeIcon: Icons.dashboard,
+                    label: 'Dashboard',
+                    index: 0,
+                  ),
                 ),
-                _buildNavItem(
-                  icon: Icons.receipt_long_outlined,
-                  activeIcon: Icons.receipt_long,
-                  label: 'Transactions',
-                  index: 1,
+                Expanded(
+                  child: _buildNavItem(
+                    icon: Icons.receipt_long_outlined,
+                    activeIcon: Icons.receipt_long,
+                    label: 'Transactions',
+                    index: 1,
+                  ),
                 ),
                 _buildFloatingButton(),
-                _buildNavItem(
-                  icon: Icons.flag_outlined,
-                  activeIcon: Icons.flag,
-                  label: 'Goals',
-                  index: 4,
+                Expanded(
+                  child: _buildNavItem(
+                    icon: Icons.flag_outlined,
+                    activeIcon: Icons.flag,
+                    label: 'Goals',
+                    index: 4,
+                  ),
                 ),
-                _buildNavItem(
-                  icon: Icons.person_outline,
-                  activeIcon: Icons.person,
-                  label: 'Profile',
-                  index: 5,
+                Expanded(
+                  child: _buildNavItem(
+                    icon: Icons.person_outline,
+                    activeIcon: Icons.person,
+                    label: 'Profile',
+                    index: 5,
+                  ),
                 ),
               ],
             ),
@@ -92,7 +100,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
